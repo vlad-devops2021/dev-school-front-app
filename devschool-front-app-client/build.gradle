@@ -1,0 +1,27 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+ext {
+    npmCommand = Os.isFamily(Os.FAMILY_WINDOWS) ? 'npm.cmd' : 'npm'
+}
+
+clean {
+    delete "production/"
+}
+
+task npmInstall(type: Exec) {
+    commandLine npmCommand, 'install', '--ignore-optional'
+}
+
+task npmBundle(type: Exec, dependsOn: npmInstall) {
+    inputs.dir file("src/")
+    commandLine npmCommand, 'run', 'build'
+    outputs.dir file("production/")
+}
+
+dependencies {
+    'default' files(npmBundle)
+}
+
+jar {
+    from npmBundle
+}
