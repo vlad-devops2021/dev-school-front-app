@@ -46,7 +46,6 @@ fun Application.module(testing: Boolean = false) {
         hostname = ip.hostName
         hostAddress = ip.hostAddress
         println("Front app server hostname : $hostname")
-        println("Front app server address : $hostAddress:$serverPort")
 
     } catch (e: UnknownHostException) {
         e.printStackTrace()
