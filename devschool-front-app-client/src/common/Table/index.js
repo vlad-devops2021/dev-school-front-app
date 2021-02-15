@@ -6,7 +6,7 @@ export default class Table extends React.Component {
 
 
     render() {
-        let height = this.props.value.length > 4 ? 400 : this.props.value.length * 100;
+        let height = 400;
 
         return (
             <div style={{height:height + 'px', overflow: 'auto', border: 1 + 'px solid #ccc', borderRadius: 2 + 'px', padding: 25 + 'px'}}>
@@ -22,7 +22,7 @@ export default class Table extends React.Component {
                 </thead>
                 <tbody>
                 {
-                    this.props.value.map((value, index) => (
+                    this.props.value ? this.props.value.map((value, index) => (
                             <tr key={index} onClick={() => this.props.onClick(value)}>
                                 {
                                     this.props.columns.map((column, index) => (
@@ -31,7 +31,7 @@ export default class Table extends React.Component {
                                 }
                             </tr>
                         )
-                    )
+                    ) : ''
                 }
                 </tbody>
             </table>

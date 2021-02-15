@@ -10,6 +10,7 @@ import io.ktor.http.content.static
 import io.ktor.request.httpMethod
 import io.ktor.request.receive
 import io.ktor.request.uri
+import io.ktor.response.header
 import io.ktor.response.respondText
 import io.ktor.routing.routing
 import io.ktor.util.KtorExperimentalAPI
@@ -18,6 +19,9 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.net.InetAddress
+import java.net.UnknownHostException
+
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -31,6 +35,22 @@ fun Application.module(testing: Boolean = false) {
     val host = environment.config.property("ktor.backend.host").getString()
     val port = environment.config.property("ktor.backend.port").getString()
     val schema = environment.config.property("ktor.backend.schema").getString()
+
+    val ip: InetAddress
+    val hostname: String
+    var hostAddress: String? = null
+    val serverPort = environment.config.property("ktor.deployment.port").getString()
+
+    try {
+        ip = InetAddress.getLocalHost()
+        hostname = ip.hostName
+        hostAddress = ip.hostAddress
+        println("Front app server hostname : $hostname")
+        println("Front app server address : $hostAddress:$serverPort")
+
+    } catch (e: UnknownHostException) {
+        e.printStackTrace()
+    }
 
     intercept(ApplicationCallPipeline.Call) {
         val uri = call.request.uri
@@ -46,6 +66,8 @@ fun Application.module(testing: Boolean = false) {
                 .method(method, requestBody)
                 .build()
             val response = client.newCall(request).execute()
+            val fullPath= "$hostAddress:$serverPort" + "|" + response.headers["Full-Path"]
+            call.response.header("Full-Path", fullPath)
             call.respondText(response.body!!.string(), contentType = ContentType.Application.Json,
                 status = HttpStatusCode.fromValue(response.code)
             )

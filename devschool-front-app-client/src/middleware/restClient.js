@@ -1,7 +1,7 @@
 import * as types from 'constants/action-types';
 import * as urls from 'constants/urls';
 import * as requestBuilder from '../utils/requestBuilder'
-
+import * as toast from '../utils/showToast'
 
 const restClient = (store) => (next) => (action) => {
 
@@ -10,6 +10,7 @@ const restClient = (store) => (next) => (action) => {
         case types.GET_ALL_SCHOOLS:
             requestBuilder.request('GET', urls.GET_ALL_SCHOOLS_URL).end((err, res) => {
                 action.callback();
+                toast.showToast(urls.GET_ALL_SCHOOLS_URL, res);
                 return next({
                     type: types.GET_ALL_SCHOOLS_SUCCESS,
                     payload: {
@@ -21,6 +22,7 @@ const restClient = (store) => (next) => (action) => {
         case types.GET_ALL_MENTORS:
             requestBuilder.request('GET', urls.GET_ALL_MENTORS_URL).end((err, res) => {
                 action.callback();
+                toast.showToast(urls.GET_ALL_MENTORS_URL, res);
                 return next({
                     type: types.GET_ALL_MENTORS_SUCCESS,
                     payload: {
@@ -32,6 +34,7 @@ const restClient = (store) => (next) => (action) => {
         case types.GET_ALL_COURSES:
             requestBuilder.request('GET', urls.GET_ALL_COURSES_URL).end((err, res) => {
                 action.callback();
+                toast.showToast(urls.GET_ALL_COURSES_URL, res);
                 return next({
                     type: types.GET_ALL_COURSES_SUCCESS,
                     payload: {
@@ -43,6 +46,7 @@ const restClient = (store) => (next) => (action) => {
         case types.GET_ALL_STUDENTS:
             requestBuilder.request('POST', urls.GET_ALL_STUDENTS_URL).send({}).end((err, res) => {
                 action.callback();
+                toast.showToast(urls.GET_ALL_STUDENTS_URL, res);
                 return next({
                     type: types.GET_ALL_STUDENTS_SUCCESS,
                     payload: {
@@ -55,6 +59,7 @@ const restClient = (store) => (next) => (action) => {
             const student = {...store.getState().singleReducer.student};
             requestBuilder.request('POST', urls.SAVE_STUDENT_URL).send(student).end((err, res) => {
                 action.payload.callback();
+                toast.showToast(urls.SAVE_STUDENT_URL, res);
                 return next({
                     type: '',
                     payload: {
@@ -67,6 +72,7 @@ const restClient = (store) => (next) => (action) => {
             const school = {...store.getState().singleReducer.school};
             requestBuilder.request('POST', urls.SAVE_SCHOOL_URL).send(school).end((err, res) => {
                 action.payload.callback();
+                toast.showToast(urls.SAVE_SCHOOL_URL, res);
                 return next({
                     type: '',
                     payload: {
@@ -79,6 +85,7 @@ const restClient = (store) => (next) => (action) => {
             const course = {...store.getState().singleReducer.course};
             requestBuilder.request('POST', urls.SAVE_COURSE_URL).send(course).end((err, res) => {
                 action.payload.callback();
+                toast.showToast(urls.SAVE_COURSE_URL, res);
                 return next({
                     type: '',
                     payload: {
@@ -91,6 +98,7 @@ const restClient = (store) => (next) => (action) => {
             const mentor = {...store.getState().singleReducer.mentor};
             requestBuilder.request('POST', urls.SAVE_MENTOR_URL).send(mentor).end((err, res) => {
                 action.payload.callback();
+                toast.showToast(urls.SAVE_MENTOR_URL, res);
                 return next({
                     type: '',
                     payload: {

@@ -1,14 +1,13 @@
 import {createStore, applyMiddleware, combineReducers} from 'redux';
-import thunk from 'redux-thunk';
-import { syncTranslationWithStore} from 'react-redux-i18n';
+import {reducer as toastrReducer} from 'react-redux-toastr'
 
 import restClient from '../middleware/restClient'
 import singleEdit from '../middleware/singleEdit';
 import tableReducer from '../reducers/tableReducer';
 import singleReducer from '../reducers/singleReducer';
+import restReducer from '../reducers/restReducer';
 
-const store = createStore(combineReducers({tableReducer: tableReducer, singleReducer: singleReducer}), {},
-    applyMiddleware(thunk, singleEdit, restClient));
+const store = createStore(combineReducers({tableReducer: tableReducer, singleReducer: singleReducer, restReducer: restReducer, toastr: toastrReducer}), {},
+    applyMiddleware(singleEdit, restClient));
 
-syncTranslationWithStore(store);
 export default store;
