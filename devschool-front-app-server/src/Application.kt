@@ -37,7 +37,7 @@ fun Application.module(testing: Boolean = false) {
     val schema = environment.config.property("ktor.backend.schema").getString()
 
     val ip: InetAddress
-    val hostname: String
+    var hostname: String? = null
     var hostAddress: String? = null
     val serverPort = environment.config.property("ktor.deployment.port").getString()
 
@@ -65,7 +65,7 @@ fun Application.module(testing: Boolean = false) {
                 .method(method, requestBody)
                 .build()
             val response = client.newCall(request).execute()
-            val fullPath= "$hostAddress:$serverPort" + "|" + response.headers["Full-Path"]
+            val fullPath= "$hostname:$serverPort" + "|" + response.headers["Full-Path"]
             call.response.header("Full-Path", fullPath)
             call.respondText(response.body!!.string(), contentType = ContentType.Application.Json,
                 status = HttpStatusCode.fromValue(response.code)
