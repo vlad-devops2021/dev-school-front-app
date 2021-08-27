@@ -1,27 +1,27 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
 ext {
-    npmCommand = Os.isFamily(Os.FAMILY_WINDOWS) ? 'npm.cmd' : 'npm'
+    yarnCommand = Os.isFamily(Os.FAMILY_WINDOWS) ? 'yarn.cmd' : 'yarn'
 }
 
 clean {
     delete "production/"
 }
 
-task npmInstall(type: Exec) {
-    commandLine npmCommand, 'install', '--ignore-optional'
+task yarnInstall(type: Exec) {
+    commandLine yarnCommand, 'install', '--ignore-optional'
 }
 
-task npmBundle(type: Exec, dependsOn: npmInstall) {
+task yarnBundle(type: Exec, dependsOn: yarnInstall) {
     inputs.dir file("src/")
-    commandLine npmCommand, 'run', 'build'
+    commandLine yarnCommand, 'run', 'build'
     outputs.dir file("production/")
 }
 
 dependencies {
-    'default' files(npmBundle)
+    'default' files(yarnBundle)
 }
 
 jar {
-    from npmBundle
+    from yarnBundle
 }

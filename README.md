@@ -6,7 +6,7 @@ Frontend part of dev school application.
 List of required tools:
 <ul>
     <li>NODE v14.15.0</li>
-    <li>Npm v6.14.8</li>
+    <li>Yarn v1.22.11</li>
     <li>Gradle v6.7.1 or gradlew</li>
     <li>Java 8</li>
 </ul>
