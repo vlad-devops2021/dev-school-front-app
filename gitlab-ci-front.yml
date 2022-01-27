@@ -1,0 +1,21 @@
+stages:
+  - build
+  - run
+
+variables:
+  image: "front_app_$CI_COMMIT_SHORT_SHA"
+
+build_app:
+  stage: build
+  tags: 
+    - dev-school-vm
+  script:
+    - docker build -t "$image" .
+
+run:
+  stage: run
+  tags:
+    - dev-school-vm
+  script:
+    - docker run -d -p8081:8081 "$image" java -jar devschool-front-app-server/build/libs/devschool-front-app-server-1.0.0.jar    
+      
